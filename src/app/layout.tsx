@@ -1,6 +1,6 @@
 'use client';
-import localFont from 'next/font/local'
 
+import localFont from 'next/font/local'
 import { PrismicPreview } from "@prismicio/next";
 import { repositoryName } from "@/prismicio";
 
