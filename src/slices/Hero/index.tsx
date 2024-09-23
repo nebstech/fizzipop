@@ -7,12 +7,14 @@ import { asText } from "@prismicio/client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
+import { View } from "@react-three/drei";
 
 import { Bounded } from "@/components/Boumded";
 import Button from "@/components/Button";
 import { TextSplitter } from "@/components/TextSplitter";
-import { View } from "@react-three/drei";
 import Scene from "./Scene";
+import { Bubbles } from "./Bubbles";
+import { useStore } from "@/Hooks/useStore";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -25,7 +27,11 @@ export type HeroProps = SliceComponentProps<Content.HeroSlice>;
  * Component for "Hero" Slices.
  */
 const Hero = ({ slice }: HeroProps): JSX.Element => {
+  const ready = useStore((state) => state.ready);
+  
   useGSAP(() => {
+    if (!ready) return;
+
     const introTl = gsap.timeline();
 
     introTl
@@ -88,7 +94,7 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
       y: 20, 
       opacity: 0,
     })
-  });
+  },{dependencies: [ready]});
 
   return (
     <Bounded
@@ -99,6 +105,7 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
 
       <View className="hero-scene pointer-events-none sticky top-0 z-50 -mt-[100vh] hidden h-screen w-screen md:block">
         <Scene />
+        <Bubbles count={300} speed={2} repeat={true} />
       </View>
       <div className="grid">
         <div className="grid h-screen place-items-center">
